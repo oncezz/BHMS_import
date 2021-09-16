@@ -160,22 +160,35 @@
       </q-card>
     </q-dialog>
 
-    <q-dialog v-model="dialogDetail">
+    <q-dialog v-model="dialogDetail" persistent>
       <q-card>
         <div class="outDetailDia">
           <div class="inDetailDia">
             <div align="right">
               <q-icon
                 class="cursor-pointer"
-                @click="closeDia"
+                @click="closeDetail"
                 name="fas fa-times"
                 size="30px"
               ></q-icon>
             </div>
             <div style="font-size: 50px">M32/11</div>
-            <div style="font-size: 16px; position: relative">
-              Initial strain adjustment
+
+            <div class="row">
+              <div style="font-size: 16px; width: 50%">
+                Initial strain adjustment
+              </div>
+              <div class="col" align="center">
+                <div>sensor 5</div>
+                <div class="sensorBox row">
+                  <div class="brx" style="width: 80px">
+                    <q-input class="brx" v-model="strain" dark dense />
+                  </div>
+                  <div>µε</div>
+                </div>
+              </div>
             </div>
+            <q-input class="brx" v-model="strain" dark dense />
           </div>
         </div>
       </q-card>
@@ -241,6 +254,7 @@ export default {
         "M43/03",
         "M43/19",
       ],
+      strain: "",
       dialogInput: false, //  เปิดหน้าต่างใส่พาสเวิด
       password: "", //      เก็บพาสเวิด
       dialogDetail: true,
@@ -252,6 +266,9 @@ export default {
     },
     closeDia() {
       this.dialogInput = false;
+    },
+    closeDetail() {
+      this.dialogDetail = false;
     },
     turnOnLoginBtn() {
       if (this.password == "4567") {
@@ -354,4 +371,10 @@ export default {
   margin: auto;
   background-color: rgba($color: #333030, $alpha: 1);
 }
+.sensorBox {
+  margin-top: 5px;
+  width: 100px;
+  height: 30px;
+  border: 1px solid white;
+} //กล่องตั้งค่าเซ็นเซอร์
 </style>
