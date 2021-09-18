@@ -47,6 +47,9 @@ export default {
       this.$router.push("main");
     }, 10000);
   },
+  beforeDestroy() {
+    console.log("test");
+  },
 };
 </script>
 
