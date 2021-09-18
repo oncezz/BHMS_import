@@ -160,11 +160,12 @@
       </q-card>
     </q-dialog>
 
+    <!-- ใส่ค่าในเซ็นเซอร์ -->
     <q-dialog v-model="dialogDetail" persistent>
       <q-card>
         <div class="outDetailDia">
           <div class="inDetailDia">
-            <div align="right">
+            <div class="q-pa-xs" align="right">
               <q-icon
                 class="cursor-pointer"
                 @click="closeDetail"
@@ -172,29 +173,75 @@
                 size="30px"
               ></q-icon>
             </div>
-            <div style="font-size: 50px">M32/11</div>
 
-            <div class="row">
-              <div style="font-size: 16px; width: 50%">
-                Initial strain adjustment
+            <div class="row q-pl-md">
+              <div style="width: 50%">
+                <div style="font-size: 50px">M32/11</div>
+                <div style="font-size: 16px">Initial strain adjustment</div>
               </div>
-              <div class="col" align="center">
+              <div class="col q-pt-xl" align="center">
                 <div>sensor 5</div>
                 <div class="sensorBox row">
-                  <div class="brx" style="width: 80px">
-                    <q-input class="brx" v-model="strain" dark dense />
+                  <div style="width: 80px">
+                    <q-input v-model="strain" dark dense />
                   </div>
-                  <div>µε</div>
+                  <div class="q-pt-md">µε</div>
                 </div>
               </div>
             </div>
-            <q-input class="brx" v-model="strain" dark dense />
+            <div class="row q-pt-lg">
+              <div class="outBox" align="center">
+                <div>sensor 1</div>
+                <div class="sensorBox row">
+                  <div style="width: 80px">
+                    <q-input v-model="strain" dark dense />
+                  </div>
+                  <div class="q-pt-md">µε</div>
+                </div>
+              </div>
+              <div class="outBox" align="center">
+                <div>sensor 2</div>
+                <div class="sensorBox row">
+                  <div style="width: 80px">
+                    <q-input v-model="strain" dark dense />
+                  </div>
+                  <div class="q-pt-md">µε</div>
+                </div>
+              </div>
+              <div class="outBox" align="center">
+                <div>sensor 3</div>
+                <div class="sensorBox row">
+                  <div style="width: 80px">
+                    <q-input v-model="strain" dark dense />
+                  </div>
+                  <div class="q-pt-md">µε</div>
+                </div>
+              </div>
+              <div class="outBox" align="center">
+                <div>sensor 4</div>
+                <div class="sensorBox row">
+                  <div style="width: 80px">
+                    <q-input v-model="strain" dark dense />
+                  </div>
+                  <div class="q-pt-md">µε</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="q-pt-lg" align="center">
+              <q-btn
+                style="width: 150px"
+                color="positive"
+                label="Save"
+                no-caps
+              />
+            </div>
           </div>
         </div>
       </q-card>
     </q-dialog>
     <!-- แบล็คกราวดำ -->
-    <div class="bgDrop fullscreen" v-show="dialogInput"></div>
+    <div class="bgDrop fullscreen" v-show="dialogInput || dialogDetail"></div>
   </div>
 </template>
 
@@ -207,7 +254,8 @@ export default {
   data() {
     return {
       turnOn: false, //ตัวเปิดปิดโปรแกรม
-      value: 80, // ค่าดาวโหลด
+      value: 0, // ค่าดาวโหลด
+      timeCheck: "",
       label15min: "29/08/2021 16:02", // ค่าแสดงใน 15 min
       labelDayTime: "28/08/2021 18:02", // ค่าแสดงใน Day Time
       labelNightTime: "29/08/2021 6:02", // ค่าแสดงใน Night Time
@@ -257,7 +305,7 @@ export default {
       strain: "",
       dialogInput: false, //  เปิดหน้าต่างใส่พาสเวิด
       password: "", //      เก็บพาสเวิด
-      dialogDetail: true,
+      dialogDetail: false,
     };
   },
   methods: {
@@ -275,6 +323,14 @@ export default {
         this.turnOn = !this.turnOn;
         this.dialogInput = !this.dialogInput;
         this.password = "";
+        if (this.turnOn) {
+          this.timeCheck = setInterval(() => {
+            this.value += 5;
+            if (this.value > 100) {
+              this.value = 5;
+            }
+          }, 1000);
+        }
       } else {
         this.$q.notify({
           message: "Password incorrect",
@@ -359,9 +415,9 @@ export default {
   width: 50%;
 }
 .outDetailDia {
-  width: 500px;
-  height: 400px;
   background-color: rgba($color: #000000, $alpha: 0.5);
+  width: 500px;
+  height: 340px;
 }
 .inDetailDia {
   position: relative;
@@ -371,10 +427,14 @@ export default {
   margin: auto;
   background-color: rgba($color: #333030, $alpha: 1);
 }
+.outBox {
+  width: 25%;
+}
 .sensorBox {
   margin-top: 5px;
+  border-radius: 5px;
   width: 100px;
-  height: 30px;
+  height: 45px;
   border: 1px solid white;
 } //กล่องตั้งค่าเซ็นเซอร์
 </style>
