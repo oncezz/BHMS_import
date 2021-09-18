@@ -58,29 +58,44 @@
           </div>
         </div>
         <div class="q-pt-md">
-          <div class="row col">
-            <box-display
+          <div class="row">
+            <div
+              class="col cursor-pointer"
+              @click="openDetail(index - 1)"
               v-for="index in 8"
               :key="index"
-              :label="labelCol[index - 1]"
-              :sensorData="sensorData[index - 1]"
-            ></box-display>
+            >
+              <box-display
+                :label="labelCol[index - 1]"
+                :sensorData="sensorData[index - 1]"
+              ></box-display>
+            </div>
           </div>
-          <div class="row col">
-            <box-display
+          <div class="row">
+            <div
+              class="col cursor-pointer"
+              @click="openDetail(index + 7)"
               v-for="index in 8"
               :key="index"
-              :label="labelCol[index + 7]"
-              :sensorData="sensorData[index + 7]"
-            ></box-display>
+            >
+              <box-display
+                :label="labelCol[index + 7]"
+                :sensorData="sensorData[index + 7]"
+              ></box-display>
+            </div>
           </div>
-          <div class="row col">
-            <box-display
+          <div class="row">
+            <div
+              class="cursor-pointer"
+              @click="openDetail(index + 15)"
               v-for="index in 3"
               :key="index"
-              :label="labelCol[index + 15]"
-              :sensorData="sensorData[index + 15]"
-            ></box-display>
+            >
+              <box-display
+                :label="labelCol[index + 15]"
+                :sensorData="sensorData[index + 15]"
+              ></box-display>
+            </div>
           </div>
         </div>
       </div>
@@ -176,14 +191,14 @@
 
             <div class="row q-pl-md">
               <div style="width: 50%">
-                <div style="font-size: 50px">M32/11</div>
+                <div style="font-size: 50px">{{ detailName }}</div>
                 <div style="font-size: 16px">Initial strain adjustment</div>
               </div>
               <div class="col q-pt-xl" align="center">
                 <div>sensor 5</div>
                 <div class="sensorBox row">
-                  <div style="width: 80px">
-                    <q-input v-model="strain" dark dense />
+                  <div class="q-px-md" style="width: 80px">
+                    <q-input v-model="strain5" dark dense />
                   </div>
                   <div class="q-pt-md">µε</div>
                 </div>
@@ -193,8 +208,8 @@
               <div class="outBox" align="center">
                 <div>sensor 1</div>
                 <div class="sensorBox row">
-                  <div style="width: 80px">
-                    <q-input v-model="strain" dark dense />
+                  <div class="q-px-md" style="width: 80px">
+                    <q-input v-model="strain1" dark dense />
                   </div>
                   <div class="q-pt-md">µε</div>
                 </div>
@@ -202,8 +217,8 @@
               <div class="outBox" align="center">
                 <div>sensor 2</div>
                 <div class="sensorBox row">
-                  <div style="width: 80px">
-                    <q-input v-model="strain" dark dense />
+                  <div class="q-px-md" style="width: 80px">
+                    <q-input v-model="strain2" dark dense />
                   </div>
                   <div class="q-pt-md">µε</div>
                 </div>
@@ -211,8 +226,8 @@
               <div class="outBox" align="center">
                 <div>sensor 3</div>
                 <div class="sensorBox row">
-                  <div style="width: 80px">
-                    <q-input v-model="strain" dark dense />
+                  <div class="q-px-md" style="width: 80px">
+                    <q-input v-model="strain3" dark dense />
                   </div>
                   <div class="q-pt-md">µε</div>
                 </div>
@@ -220,8 +235,8 @@
               <div class="outBox" align="center">
                 <div>sensor 4</div>
                 <div class="sensorBox row">
-                  <div style="width: 80px">
-                    <q-input v-model="strain" dark dense />
+                  <div class="q-px-md" style="width: 80px">
+                    <q-input v-model="strain4" dark dense />
                   </div>
                   <div class="q-pt-md">µε</div>
                 </div>
@@ -230,6 +245,7 @@
 
             <div class="q-pt-lg" align="center">
               <q-btn
+                @click="saveIntBtn()"
                 style="width: 150px"
                 color="positive"
                 label="Save"
@@ -246,6 +262,7 @@
 </template>
 
 <script>
+import axios from "axios";
 import boxDisplay from "../components/boxDisplay.vue";
 export default {
   components: {
@@ -253,7 +270,7 @@ export default {
   },
   data() {
     return {
-      turnOn: false, //ตัวเปิดปิดโปรแกรม
+      turnOn: true, //ตัวเปิดปิดโปรแกรม
       value: 0, // ค่าดาวโหลด
       timeCheck: "",
       label15min: "29/08/2021 16:02", // ค่าแสดงใน 15 min
@@ -302,13 +319,57 @@ export default {
         "M43/03",
         "M43/19",
       ],
-      strain: "",
+      strain1: 0,
+      strain2: 0,
+      strain3: 0,
+      strain4: 0,
+      strain5: 0,
+      detailName: "", // ชื่อเซนเซอร์ที่แสดงในกล่องดีเทล
       dialogInput: false, //  เปิดหน้าต่างใส่พาสเวิด
       password: "", //      เก็บพาสเวิด
-      dialogDetail: false,
+      dialogDetail: false, // ตั้งค่าเซ็นเซอ
+      serverPath: "http://localhost/bhms_api/",
+      colId: 0,
     };
   },
   methods: {
+    async openDetail(index) {
+      this.colId = index;
+      this.detailName = this.labelCol[index];
+      let url = this.serverPath + "loadint.php?col=" + index;
+      let res = await axios.get(url);
+
+      this.strain1 = res.data[0];
+      this.strain2 = res.data[1];
+      this.strain3 = res.data[2];
+      this.strain4 = res.data[3];
+      this.strain5 = res.data[4];
+      this.dialogDetail = true;
+    },
+    async saveIntBtn() {
+      let url =
+        this.serverPath +
+        "saveint.php?col=" +
+        this.colId +
+        "&s1=" +
+        this.strain1 +
+        "&s2=" +
+        this.strain2 +
+        "&s3=" +
+        this.strain3 +
+        "&s4=" +
+        this.strain4 +
+        "&s5=" +
+        this.strain5;
+      let res = await axios.get(url);
+      this.$q.notify({
+        message: "data saved",
+        color: "positive",
+      });
+      this.dialogDetail = false;
+
+      console.log(url);
+    },
     turnOnBtn() {
       this.dialogInput = true;
     },
@@ -329,7 +390,7 @@ export default {
             if (this.value > 100) {
               this.value = 5;
             }
-          }, 1000);
+          }, 45000);
         }
       } else {
         this.$q.notify({
