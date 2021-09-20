@@ -31,21 +31,14 @@ export default {
   },
 
   mounted() {
-    setTimeout(() => {
-      this.progress = 25;
-    }, 2000);
-    setTimeout(() => {
-      this.progress = 50;
-    }, 4000);
-    setTimeout(() => {
-      this.progress = 75;
-    }, 6000);
-    setTimeout(() => {
-      this.progress = 100;
-    }, 8000);
-    setTimeout(() => {
-      this.$router.push("main");
-    }, 10000);
+    for (let i = 0; i <= 100; i = i + 2.5) {
+      setTimeout(() => {
+        this.progress = i;
+        if (i == 100) {
+          this.$router.push("main");
+        }
+      }, 40 * i);
+    }
   },
   beforeDestroy() {
     console.log("test");

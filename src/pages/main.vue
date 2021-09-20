@@ -300,7 +300,7 @@ export default {
   data() {
     return {
       passwordSetup: "", //รหัสเปิดปิดโปรแกรม
-      turnOn: true, //ตัวเปิดปิดโปรแกรม
+      turnOn: false, //ตัวเปิดปิดโปรแกรม
       value: 0, // ค่าดาวโหลด
       timeCheck: "",
       label15min: "29/08/2021 16:02", // ค่าแสดงใน 15 min
