@@ -31,105 +31,131 @@
       </div>
     </div>
     <!-- หน้าต่างหลักตอนปิด -->
-    <div style="height: 30px"></div>
-    <div class="mainDiv" v-show="!turnOn">
-      <div class="centerW" align="center">Please turn on the system</div>
-    </div>
-    <!-- หน้าต่างใหญ่ตอนเปิด -->
-    <div class="mainDiv" v-show="turnOn">
-      <div class="row" style="background-color: black">
-        <div class="q-pa-md">
-          <div class="fRow" align="center">
-            <div class="q-pt-md">
-              <q-circular-progress
-                show-value
-                font-size="18px"
-                :value="value"
-                size="180px"
-                :thickness="0.3"
-                color="green-8"
-                track-color="grey-3"
-                class="q-ma-md"
-              >
-                {{ value }}%
-              </q-circular-progress>
-            </div>
-            <div style="font-size: 16px">15 min</div>
-          </div>
+    <div v-show="!turnOn" class="absolute-center">
+      <div class="mainDiv">
+        <div class="centerW" align="center">Please turn on the system</div>
+      </div>
+      <div style="height: 20px"></div>
+      <div class="row btD q-pa-sm" style="width: 1040px; margin: auto">
+        <div class="btDiv q-pa-md">
+          <div class="btWU">15 min interval</div>
+          <div class="btWT">The lastest updated time</div>
+          <div class="btDat">-</div>
         </div>
-        <div class="q-pt-md">
-          <div class="row">
-            <div
-              class="col cursor-pointer"
-              @click="openDetail(index - 1)"
-              v-for="index in 8"
-              :key="index"
-            >
-              <box-display
-                :label="labelCol[index - 1]"
-                :sensorData="sensorData[index - 1]"
-              ></box-display>
-            </div>
-          </div>
-          <div class="row">
-            <div
-              class="col cursor-pointer"
-              @click="openDetail(index + 7)"
-              v-for="index in 8"
-              :key="index"
-            >
-              <box-display
-                :label="labelCol[index + 7]"
-                :sensorData="sensorData[index + 7]"
-              ></box-display>
-            </div>
-          </div>
-          <div class="row">
-            <div
-              class="cursor-pointer"
-              @click="openDetail(index + 15)"
-              v-for="index in 3"
-              :key="index"
-            >
-              <box-display
-                :label="labelCol[index + 15]"
-                :sensorData="sensorData[index + 15]"
-              ></box-display>
-            </div>
-          </div>
+        <div class="btDiv q-pa-md">
+          <div class="btWU">Day time interval</div>
+          <div class="btWT">The lastest updated time</div>
+          <div class="btDat">-</div>
+        </div>
+        <div class="btDiv q-pa-md">
+          <div class="btWU">Night time interval</div>
+          <div class="btWT">The lastest updated time</div>
+          <div class="btDat">-</div>
+        </div>
+        <div class="btDiv q-pa-md">
+          <div class="btWU">24 hour interval</div>
+          <div class="btWT">The lastest updated time</div>
+          <div class="btDat">-</div>
         </div>
       </div>
     </div>
-    <!-- 4บล็อคด้านล่าง -->
-    <div style="height: 20px"></div>
-    <div class="row btD q-pa-sm" style="width: 1024px; margin: auto">
-      <div class="btDiv q-pa-md">
-        <div class="btWU">15 min interval</div>
-        <div class="btWT">The lastest updated time</div>
-        <div class="btDat" v-show="!turnOn">-</div>
-        <div class="btDat" v-show="turnOn">{{ label15min }}</div>
-      </div>
-      <div class="btDiv q-pa-md">
-        <div class="btWU">Day time interval</div>
-        <div class="btWT">The lastest updated time</div>
-        <div class="btDat" v-show="!turnOn">-</div>
-        <div class="btDat" v-show="turnOn">{{ labelDayTime }}</div>
-      </div>
-      <div class="btDiv q-pa-md">
-        <div class="btWU">Night time interval</div>
-        <div class="btWT">The lastest updated time</div>
-        <div class="btDat" v-show="!turnOn">-</div>
-        <div class="btDat" v-show="turnOn">{{ labelNightTime }}</div>
-      </div>
-      <div class="btDiv q-pa-md">
-        <div class="btWU">24 hour interval</div>
-        <div class="btWT">The lastest updated time</div>
-        <div class="btDat" v-show="!turnOn">-</div>
-        <div class="btDat" v-show="turnOn">{{ label24hour }}</div>
-      </div>
-    </div>
-    <!-- ใส่พาสเวิด -->
 
+    <!-- หน้าต่างใหญ่ตอนเปิด -->
+    <div v-show="turnOn" class="absolute-center">
+      <div class="mainDiv">
+        <div class="row" style="background-color: black">
+          <div class="q-pa-md">
+            <div class="fRow" align="center">
+              <div class="q-pt-md">
+                <q-circular-progress
+                  show-value
+                  font-size="18px"
+                  :value="value"
+                  size="180px"
+                  :thickness="0.3"
+                  color="green-8"
+                  track-color="grey-3"
+                  class="q-ma-md"
+                >
+                  {{ value }}%
+                </q-circular-progress>
+              </div>
+              <div style="font-size: 16px">15 min</div>
+            </div>
+          </div>
+          <div class="q-pt-md">
+            <div class="row">
+              <div
+                class="col cursor-pointer"
+                @click="openDetail(index - 1)"
+                v-for="index in 8"
+                :key="index"
+              >
+                <box-display
+                  :label="labelCol[index - 1]"
+                  :sensorData="sensorData[index - 1]"
+                ></box-display>
+              </div>
+            </div>
+            <div class="row">
+              <div
+                class="col cursor-pointer"
+                @click="openDetail(index + 7)"
+                v-for="index in 8"
+                :key="index"
+              >
+                <box-display
+                  :label="labelCol[index + 7]"
+                  :sensorData="sensorData[index + 7]"
+                ></box-display>
+              </div>
+            </div>
+            <div class="row">
+              <div
+                class="cursor-pointer"
+                @click="openDetail(index + 15)"
+                v-for="index in 3"
+                :key="index"
+              >
+                <box-display
+                  :label="labelCol[index + 15]"
+                  :sensorData="sensorData[index + 15]"
+                ></box-display>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="height: 20px"></div>
+      <div class="row btD q-pa-sm" style="width: 1040px; margin: auto">
+        <div class="btDiv q-pa-md">
+          <div class="btWU">15 min interval</div>
+          <div class="btWT">The lastest updated time</div>
+          <div class="btDat" v-show="!turnOn">-</div>
+          <div class="btDat" v-show="turnOn">{{ label15min }}</div>
+        </div>
+        <div class="btDiv q-pa-md">
+          <div class="btWU">Day time interval</div>
+          <div class="btWT">The lastest updated time</div>
+          <div class="btDat" v-show="!turnOn">-</div>
+          <div class="btDat" v-show="turnOn">{{ labelDayTime }}</div>
+        </div>
+        <div class="btDiv q-pa-md">
+          <div class="btWU">Night time interval</div>
+          <div class="btWT">The lastest updated time</div>
+          <div class="btDat" v-show="!turnOn">-</div>
+          <div class="btDat" v-show="turnOn">{{ labelNightTime }}</div>
+        </div>
+        <div class="btDiv q-pa-md">
+          <div class="btWU">24 hour interval</div>
+          <div class="btWT">The lastest updated time</div>
+          <div class="btDat" v-show="!turnOn">-</div>
+          <div class="btDat" v-show="turnOn">{{ label24hour }}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ใส่พาสเวิด -->
     <q-dialog v-model="dialogInput" persistent>
       <q-card>
         <div class="diaBox">
@@ -151,6 +177,8 @@
                 v-model="password"
                 placeholder="Please input password here"
                 dark
+                ref="password"
+                @keyup.enter="turnOnLoginBtn"
               />
             </div>
 
@@ -256,6 +284,7 @@
         </div>
       </q-card>
     </q-dialog>
+
     <!-- แบล็คกราวดำ -->
     <div class="bgDrop fullscreen" v-show="dialogInput || dialogDetail"></div>
   </div>
@@ -270,6 +299,7 @@ export default {
   },
   data() {
     return {
+      passwordSetup: "", //รหัสเปิดปิดโปรแกรม
       turnOn: true, //ตัวเปิดปิดโปรแกรม
       value: 0, // ค่าดาวโหลด
       timeCheck: "",
@@ -328,7 +358,7 @@ export default {
       dialogInput: false, //  เปิดหน้าต่างใส่พาสเวิด
       password: "", //      เก็บพาสเวิด
       dialogDetail: false, // ตั้งค่าเซ็นเซอ
-      serverPath: "http://localhost/bhms_api/",
+      serverPath: "http://localhost/bhms_data/",
       colId: 0,
     };
   },
@@ -336,7 +366,7 @@ export default {
     async openDetail(index) {
       this.colId = index;
       this.detailName = this.labelCol[index];
-      let url = this.serverPath + "loadint.php?col=" + index;
+      let url = this.serverPath + "loadinit.php?col=" + index;
       let res = await axios.get(url);
 
       this.strain1 = res.data[0];
@@ -372,6 +402,9 @@ export default {
     },
     turnOnBtn() {
       this.dialogInput = true;
+      setTimeout(() => {
+        this.$refs.password.$el.focus();
+      }, 20);
     },
     closeDia() {
       this.dialogInput = false;
@@ -380,7 +413,7 @@ export default {
       this.dialogDetail = false;
     },
     turnOnLoginBtn() {
-      if (this.password == "4567") {
+      if (this.password == this.passwordSetup) {
         this.turnOn = !this.turnOn;
         this.dialogInput = !this.dialogInput;
         this.password = "";
@@ -400,6 +433,14 @@ export default {
         this.password = "";
       }
     },
+    async loadPassword() {
+      let url = this.serverPath + "loadpassword.php";
+      let res = await axios.get(url);
+      this.passwordSetup = res.data[0].password;
+    },
+  },
+  mounted() {
+    this.loadPassword();
   },
 };
 </script>
@@ -419,16 +460,17 @@ export default {
 }
 .bgimg {
   background-image: url("../../public/image/bg.jpg");
+  background-size: cover;
 }
 .mainDiv {
   background-color: rgba($color: #000000, $alpha: 0.5);
-  width: 1024px;
+  width: 1040px;
   height: 300px;
   margin: auto;
 }
 .centerW {
   font-size: 50px;
-  line-height: 400px;
+  line-height: 300px;
 }
 .btD {
   background-color: rgba($color: #000000, $alpha: 0.5);
