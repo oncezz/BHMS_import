@@ -131,25 +131,21 @@
         <div class="btDiv q-pa-md">
           <div class="btWU">15 min interval</div>
           <div class="btWT">The lastest updated time</div>
-          <div class="btDat" v-show="!turnOn">-</div>
           <div class="btDat" v-show="turnOn">{{ label15min }}</div>
         </div>
         <div class="btDiv q-pa-md">
           <div class="btWU">Day time interval</div>
           <div class="btWT">The lastest updated time</div>
-          <div class="btDat" v-show="!turnOn">-</div>
           <div class="btDat" v-show="turnOn">{{ labelDayTime }}</div>
         </div>
         <div class="btDiv q-pa-md">
           <div class="btWU">Night time interval</div>
           <div class="btWT">The lastest updated time</div>
-          <div class="btDat" v-show="!turnOn">-</div>
           <div class="btDat" v-show="turnOn">{{ labelNightTime }}</div>
         </div>
         <div class="btDiv q-pa-md">
           <div class="btWU">24 hour interval</div>
           <div class="btWT">The lastest updated time</div>
-          <div class="btDat" v-show="!turnOn">-</div>
           <div class="btDat" v-show="turnOn">{{ label24hour }}</div>
         </div>
       </div>
@@ -299,14 +295,15 @@ export default {
   },
   data() {
     return {
+      speed: 20, //ตัวจำลองความเร็วในการทำงาน
       passwordSetup: "", //รหัสเปิดปิดโปรแกรม
       turnOn: false, //ตัวเปิดปิดโปรแกรม
       value: 0, // ค่าดาวโหลด
       timeCheck: "",
-      label15min: "29/08/2021 16:02", // ค่าแสดงใน 15 min
-      labelDayTime: "28/08/2021 18:02", // ค่าแสดงใน Day Time
-      labelNightTime: "29/08/2021 6:02", // ค่าแสดงใน Night Time
-      label24hour: "29/08/2021 0:02", // ค่าแสดงของ 24 hour
+      label15min: "-", // ค่าแสดงใน 15 min
+      labelDayTime: "-", // ค่าแสดงใน Day Time
+      labelNightTime: "-", // ค่าแสดงใน Night Time
+      label24hour: "-", // ค่าแสดงของ 24 hour
       sensorData: [
         [0, 1, 1, 1, 0],
         [1, 1, 0, 1, 0],
@@ -397,8 +394,6 @@ export default {
         color: "positive",
       });
       this.dialogDetail = false;
-
-      console.log(url);
     },
     turnOnBtn() {
       this.dialogInput = true;
@@ -412,18 +407,30 @@ export default {
     closeDetail() {
       this.dialogDetail = false;
     },
-    turnOnLoginBtn() {
+    async turnOnLoginBtn() {
       if (this.password == this.passwordSetup) {
         this.turnOn = !this.turnOn;
         this.dialogInput = !this.dialogInput;
         this.password = "";
         if (this.turnOn) {
-          this.timeCheck = setInterval(() => {
-            this.value += 5;
+          //ทำการ load ข้อมูลที่ตกค้าง
+          let url = this.serverPath + "loadolddata.php";
+          let res = await axios.get(url);
+
+          await this.loadCurrentData();
+          this.value = 0;
+          this.timeCheck = setInterval(async () => {
+            this.value += 1;
             if (this.value > 100) {
-              this.value = 5;
+              this.value = 1;
+              await this.loadCurrentData();
+              await this.loadDayTimeData();
+              await this.loadNightTimeData();
+              await this.load24hourData();
             }
-          }, 45000);
+          }, 9000 / this.speed);
+        } else {
+          clearInterval(this.timeCheck);
         }
       } else {
         this.$q.notify({
@@ -437,6 +444,81 @@ export default {
       let url = this.serverPath + "loadpassword.php";
       let res = await axios.get(url);
       this.passwordSetup = res.data[0].password;
+    },
+    async loadCurrentData() {
+      //ทำการ load ข้อมูลล่าสุด
+      let url = this.serverPath + "loadcurrentdata.php";
+      let res = await axios.get(url);
+      this.sensorData = [];
+      for (let i = 0; i < res.data.length; i++) {
+        this.sensorData.push(res.data[i]);
+      }
+      //update เวลา
+      let currentDate = new Date();
+      this.label15min =
+        currentDate.getDate() +
+        "/" +
+        (currentDate.getMonth() + 1) +
+        "/" +
+        currentDate.getFullYear() +
+        " " +
+        currentDate.getHours() +
+        ":" +
+        currentDate.getMinutes();
+    },
+    async loadDayTimeData() {
+      //ทำการ load ข้อมูลล่าสุด
+      let url = this.serverPath + "loaddaytimedata.php";
+      let res = await axios.get(url);
+      if (res.data == "updated") {
+        let currentDate = new Date();
+        this.labelDayTime =
+          currentDate.getDate() +
+          "/" +
+          (currentDate.getMonth() + 1) +
+          "/" +
+          currentDate.getFullYear() +
+          " " +
+          currentDate.getHours() +
+          ":" +
+          currentDate.getMinutes();
+      }
+    },
+    async loadNightTimeData() {
+      //ทำการ load ข้อมูลล่าสุด
+      let url = this.serverPath + "loadnighttimedata.php";
+      let res = await axios.get(url);
+      if (res.data == "updated") {
+        let currentDate = new Date();
+        this.labelNightTime =
+          currentDate.getDate() +
+          "/" +
+          (currentDate.getMonth() + 1) +
+          "/" +
+          currentDate.getFullYear() +
+          " " +
+          currentDate.getHours() +
+          ":" +
+          currentDate.getMinutes();
+      }
+    },
+    async load24hourData() {
+      //ทำการ load ข้อมูลล่าสุด
+      let url = this.serverPath + "load24hourdata.php";
+      let res = await axios.get(url);
+      if (res.data == "updated") {
+        let currentDate = new Date();
+        this.label24hour =
+          currentDate.getDate() +
+          "/" +
+          (currentDate.getMonth() + 1) +
+          "/" +
+          currentDate.getFullYear() +
+          " " +
+          currentDate.getHours() +
+          ":" +
+          currentDate.getMinutes();
+      }
     },
   },
   mounted() {
@@ -489,8 +571,9 @@ export default {
   font-size: 12px;
 }
 .btDat {
-  padding-top: 30px;
+  padding-top: 10px;
   text-align: center;
+  font-size: 24px;
 }
 .fRow {
   width: 300px;
