@@ -423,6 +423,8 @@ export default {
             this.value += 1;
             if (this.value > 100) {
               this.value = 1;
+              let url = this.serverPath + "loadolddata.php";
+              let res = await axios.get(url);
               await this.loadCurrentData();
               await this.loadDayTimeData();
               await this.loadNightTimeData();
@@ -449,22 +451,24 @@ export default {
       //ทำการ load ข้อมูลล่าสุด
       let url = this.serverPath + "loadcurrentdata.php";
       let res = await axios.get(url);
-      this.sensorData = [];
-      for (let i = 0; i < res.data.length; i++) {
-        this.sensorData.push(res.data[i]);
+      if (res.data != "NR") {
+        this.sensorData = [];
+        for (let i = 0; i < res.data.length; i++) {
+          this.sensorData.push(res.data[i]);
+        }
+        //update เวลา
+        let currentDate = new Date();
+        this.label15min =
+          currentDate.getDate() +
+          "/" +
+          (currentDate.getMonth() + 1) +
+          "/" +
+          currentDate.getFullYear() +
+          " " +
+          currentDate.getHours() +
+          ":" +
+          currentDate.getMinutes();
       }
-      //update เวลา
-      let currentDate = new Date();
-      this.label15min =
-        currentDate.getDate() +
-        "/" +
-        (currentDate.getMonth() + 1) +
-        "/" +
-        currentDate.getFullYear() +
-        " " +
-        currentDate.getHours() +
-        ":" +
-        currentDate.getMinutes();
     },
     async loadDayTimeData() {
       //ทำการ load ข้อมูลล่าสุด
