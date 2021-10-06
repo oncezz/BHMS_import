@@ -295,7 +295,7 @@ export default {
   },
   data() {
     return {
-      speed: 20, //ตัวจำลองความเร็วในการทำงาน
+      speed: 1, //ตัวจำลองความเร็วในการทำงาน
       passwordSetup: "", //รหัสเปิดปิดโปรแกรม
       turnOn: false, //ตัวเปิดปิดโปรแกรม
       value: 0, // ค่าดาวโหลด
@@ -305,8 +305,6 @@ export default {
       labelNightTime: "-", // ค่าแสดงใน Night Time
       label24hour: "-", // ค่าแสดงของ 24 hour
       sensorData: [
-        [0, 1, 1, 1, 0],
-        [1, 1, 0, 1, 0],
         [1, 1, 1, 1, 1],
         [1, 1, 1, 1, 1],
         [1, 1, 1, 1, 1],
@@ -316,12 +314,14 @@ export default {
         [1, 1, 1, 1, 1],
         [1, 1, 1, 1, 1],
         [1, 1, 1, 1, 1],
-        [1, 1, 0, 1, 1],
-        [1, 1, 0, 1, 1],
         [1, 1, 1, 1, 1],
         [1, 1, 1, 1, 1],
         [1, 1, 1, 1, 1],
-        [1, 1, 0, 1, 1],
+        [1, 1, 1, 1, 1],
+        [1, 1, 1, 1, 1],
+        [1, 1, 1, 1, 1],
+        [1, 1, 1, 1, 1],
+        [1, 1, 1, 1, 1],
         [1, 1, 1, 1, 1],
         [1, 1, 1, 1, 1],
       ], // ตัวเซนเซอร์ 0 สีแดง 1 สีเขียว
@@ -467,7 +467,7 @@ export default {
           " " +
           currentDate.getHours() +
           ":" +
-          currentDate.getMinutes();
+          ("0" + currentDate.getMinutes()).slice(-2);
       }
     },
     async loadDayTimeData() {
@@ -485,7 +485,7 @@ export default {
           " " +
           currentDate.getHours() +
           ":" +
-          currentDate.getMinutes();
+          ("0" + currentDate.getMinutes()).slice(-2);
       }
     },
     async loadNightTimeData() {
@@ -503,7 +503,7 @@ export default {
           " " +
           currentDate.getHours() +
           ":" +
-          currentDate.getMinutes();
+          ("0" + currentDate.getMinutes()).slice(-2);
       }
     },
     async load24hourData() {
@@ -521,7 +521,7 @@ export default {
           " " +
           currentDate.getHours() +
           ":" +
-          currentDate.getMinutes();
+          ("0" + currentDate.getMinutes()).slice(-2);
       }
     },
   },
