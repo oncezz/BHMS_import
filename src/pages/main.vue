@@ -295,7 +295,7 @@ export default {
   },
   data() {
     return {
-      speed: 1, //ตัวจำลองความเร็วในการทำงาน
+      speed: 3, //ตัวจำลองความเร็วในการทำงาน
       passwordSetup: "", //รหัสเปิดปิดโปรแกรม
       turnOn: false, //ตัวเปิดปิดโปรแกรม
       value: 0, // ค่าดาวโหลด
@@ -430,7 +430,7 @@ export default {
               await this.loadNightTimeData();
               await this.load24hourData();
             }
-          }, 3000 / this.speed);
+          }, 9000 / this.speed);
         } else {
           clearInterval(this.timeCheck);
         }
