@@ -16,7 +16,7 @@
           src="../../public/image/turnOff.svg"
           alt=""
           width="75px"
-          @click="turnOnBtn()"
+          @click="turnOnBtn"
           class="cursor-pointer"
         />
       </div>
@@ -25,7 +25,7 @@
           src="../../public/image/turnOn.svg"
           alt=""
           width="75px"
-          @click="turnOnBtn()"
+          @click="turnOnBtn"
           class="cursor-pointer"
         />
       </div>
@@ -80,7 +80,7 @@
                   {{ value }}%
                 </q-circular-progress>
               </div>
-              <div style="font-size: 16px">15 min</div>
+              <div style="font-size: 16px">5 min</div>
             </div>
           </div>
           <div class="q-pt-md">
@@ -430,7 +430,7 @@ export default {
               await this.loadNightTimeData();
               await this.load24hourData();
             }
-          }, 9000 / this.speed);
+          }, 3000 / this.speed);
         } else {
           clearInterval(this.timeCheck);
         }
