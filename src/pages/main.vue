@@ -426,9 +426,9 @@ export default {
               let url = this.serverPath + "loadolddata.php";
               let res = await axios.get(url);
               await this.loadCurrentData();
-              await this.loadDayTimeData();
-              await this.loadNightTimeData();
-              await this.load24hourData();
+              // await this.loadDayTimeData();
+              // await this.loadNightTimeData();
+              // await this.load24hourData();
             }
           }, 9000 / this.speed);
         } else {
@@ -451,6 +451,10 @@ export default {
       //ทำการ load ข้อมูลล่าสุด
       let url = this.serverPath + "loadcurrentdata.php";
       let res = await axios.get(url);
+      let today = new Date();
+      let time =
+        today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+      console.log(res.data, time);
       if (res.data != "NR") {
         this.sensorData = [];
         for (let i = 0; i < res.data.length; i++) {
