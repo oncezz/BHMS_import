@@ -80,7 +80,7 @@
                   {{ value }}%
                 </q-circular-progress>
               </div>
-              <div style="font-size: 16px">5 min</div>
+              <div style="font-size: 16px">3 min</div>
             </div>
           </div>
           <div class="q-pt-md">
@@ -295,7 +295,7 @@ export default {
   },
   data() {
     return {
-      speed: 5, //ตัวจำลองความเร็วในการทำงาน
+      speed: 15, //ตัวจำลองความเร็วในการทำงาน
       passwordSetup: "", //รหัสเปิดปิดโปรแกรม
       turnOn: false, //ตัวเปิดปิดโปรแกรม
       value: 0, // ค่าดาวโหลด
@@ -426,9 +426,9 @@ export default {
               let url = this.serverPath + "loadolddata.php";
               let res = await axios.get(url);
               await this.loadCurrentData();
-              // await this.loadDayTimeData();
-              // await this.loadNightTimeData();
-              // await this.load24hourData();
+              await this.loadDayTimeData();
+              await this.loadNightTimeData();
+              await this.load24hourData();
             }
           }, 9000 / this.speed);
         } else {
@@ -454,7 +454,6 @@ export default {
       let today = new Date();
       let time =
         today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-      console.log(res.data, time);
       if (res.data != "NR") {
         this.sensorData = [];
         for (let i = 0; i < res.data.length; i++) {
