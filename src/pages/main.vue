@@ -426,14 +426,16 @@ export default {
               let url = this.serverPath + "loadolddata.php";
               let res = await axios.get(url);
               await this.loadCurrentData();
-              let today = new Date();
-              let h = today.getHours;
-              let m = today.getMinutes;
-              if (h == 0 && m <= 15) {
-                await this.loadDayTimeData();
-                await this.loadNightTimeData();
-                await this.load24hourData();
-              }
+              await this.loadDayTimeData();
+              await this.loadNightTimeData();
+              await this.load24hourData();
+              // let today = new Date();
+              // let h = today.getHours;
+              // let m = today.getMinutes;
+              // console.log(h, m);
+              // if (h == 0 && m <= 5) {
+              //   await this.load24hourData();
+              // }
             }
           }, 9000 / this.speed);
         } else {
@@ -533,7 +535,7 @@ export default {
       }
     },
   },
-  mounted() {
+  async mounted() {
     this.loadPassword();
   },
 };
