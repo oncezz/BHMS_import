@@ -426,8 +426,9 @@ export default {
               let url = this.serverPath + "loadolddata.php";
               let res = await axios.get(url);
               await this.loadCurrentData();
-              let dateM = new date();
-              if (dateM.getHours() == 0 && dateM.getMinutes() >= 15) {
+              let dateM = new Date();
+
+              if (dateM.getHours() >= 1 && dateM.getHours() <= 2) {
                 await this.loadDayTimeData();
                 await this.loadNightTimeData();
                 await this.load24hourData();
