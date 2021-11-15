@@ -428,7 +428,7 @@ export default {
               await this.loadCurrentData();
               let dateM = new Date();
 
-              if (dateM.getHours() >= 1 && dateM.getHours() <= 2) {
+              if (dateM.getHours() >= 1) {
                 await this.loadDayTimeData();
                 await this.loadNightTimeData();
                 await this.load24hourData();
