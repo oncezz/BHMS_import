@@ -80,7 +80,7 @@
                   {{ value }}%
                 </q-circular-progress>
               </div>
-              <div style="font-size: 16px">3 min</div>
+              <div style="font-size: 16px">5 min</div>
             </div>
           </div>
           <div class="q-pt-md">
@@ -295,7 +295,7 @@ export default {
   },
   data() {
     return {
-      speed: 15, //ตัวจำลองความเร็วในการทำงาน
+      speed: 100, //ตัวจำลองความเร็วในการทำงาน 100= 1%
       passwordSetup: "", //รหัสเปิดปิดโปรแกรม
       turnOn: false, //ตัวเปิดปิดโปรแกรม
       value: 0, // ค่าดาวโหลด
@@ -442,7 +442,7 @@ export default {
               //   await this.load24hourData();
               // }
             }
-          }, 9000 / this.speed);
+          }, 300000 / this.speed); // เวลาในการโหลด 1% จะทำการโหลดทุกครั้งที่ ครบ 100
         } else {
           clearInterval(this.timeCheck);
         }
@@ -542,6 +542,9 @@ export default {
   },
   async mounted() {
     this.loadPassword();
+  },
+  beforeDestroy() {
+    clearInterval(this.timeCheck);
   },
 };
 </script>
