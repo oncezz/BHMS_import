@@ -7,7 +7,7 @@
           <img src="../../public/image/logo.svg" alt="" style="width: 80px" />
         </div>
         <div>
-          <div class="fontTitle">BHMS Analysis program</div>
+          <div class="fontTitle">BHMS Analysis Program</div>
           <div class="fontSub">Burapha Withi Express Health Monitor System</div>
         </div>
       </div>
