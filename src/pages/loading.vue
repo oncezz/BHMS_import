@@ -6,7 +6,7 @@
           <img src="../../public/image/logo.svg" alt="" style="width: 280px" />
         </div>
         <div>
-          <div class="fontTitle q-pt-xl">BHMS Analysis program</div>
+          <div class="fontTitle q-pt-xl">BHMS Analysis Program</div>
           <div class="fontSub">Burapha Withi Express Health Monitor System</div>
         </div>
       </div>
@@ -39,9 +39,6 @@ export default {
         }
       }, 40 * i);
     }
-  },
-  beforeDestroy() {
-    console.log("test");
   },
 };
 </script>
