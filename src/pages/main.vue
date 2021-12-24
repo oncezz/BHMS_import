@@ -16,7 +16,7 @@
           src="../../public/image/turnOff.svg"
           alt=""
           width="75px"
-          @click="turnOnBtn"
+          @click="turnOnLoginBtn()"
           class="cursor-pointer"
         />
       </div>
@@ -25,7 +25,7 @@
           src="../../public/image/turnOn.svg"
           alt=""
           width="75px"
-          @click="turnOnBtn"
+          @click="turnOnLoginBtn()"
           class="cursor-pointer"
         />
       </div>
@@ -152,7 +152,7 @@
     </div>
 
     <!-- ใส่พาสเวิด -->
-    <q-dialog v-model="dialogInput" persistent>
+    <!-- <q-dialog v-model="dialogInput" persistent>
       <q-card>
         <div class="diaBox">
           <div class="inDiabox">
@@ -197,7 +197,7 @@
           </div>
         </div>
       </q-card>
-    </q-dialog>
+    </q-dialog> -->
 
     <!-- ใส่ค่าในเซ็นเซอร์ -->
     <q-dialog v-model="dialogDetail" persistent>
@@ -282,7 +282,7 @@
     </q-dialog>
 
     <!-- แบล็คกราวดำ -->
-    <div class="bgDrop fullscreen" v-show="dialogInput || dialogDetail"></div>
+    <div class="bgDrop fullscreen" v-show="dialogDetail"></div>
   </div>
 </template>
 
@@ -340,7 +340,7 @@ export default {
         "M36/20",
         "M38/17",
         "M39/06",
-        "M40/40",
+        "M40/04",
         "M41/09",
         "M42/04",
         "M43/03",
@@ -352,7 +352,7 @@ export default {
       strain4: 0,
       strain5: 0,
       detailName: "", // ชื่อเซนเซอร์ที่แสดงในกล่องดีเทล
-      dialogInput: false, //  เปิดหน้าต่างใส่พาสเวิด
+      // dialogInput: false, //  เปิดหน้าต่างใส่พาสเวิด
       password: "", //      เก็บพาสเวิด
       dialogDetail: false, // ตั้งค่าเซ็นเซอ
       serverPath: "http://localhost/bhms_data/",
@@ -408,51 +408,51 @@ export default {
       this.dialogDetail = false;
     },
     async turnOnLoginBtn() {
-      if (this.password == this.passwordSetup) {
-        this.turnOn = !this.turnOn;
-        this.dialogInput = !this.dialogInput;
-        this.password = "";
-        if (this.turnOn) {
-          //ทำการ load ข้อมูลที่ตกค้าง
-          let url = this.serverPath + "loadolddata.php";
-          let res = await axios.get(url);
+      // if (this.password == this.passwordSetup) {
+      this.turnOn = !this.turnOn;
+      // this.dialogInput = !this.dialogInput;
+      this.password = "";
+      if (this.turnOn) {
+        //ทำการ load ข้อมูลที่ตกค้าง
+        let url = this.serverPath + "loadolddata.php";
+        let res = await axios.get(url);
 
-          await this.loadCurrentData();
-          this.value = 0;
-          this.timeCheck = setInterval(async () => {
-            this.value += 1;
-            if (this.value > 100) {
-              this.value = 1;
-              let url = this.serverPath + "loadolddata.php";
-              let res = await axios.get(url);
-              await this.loadCurrentData();
-              let dateM = new Date();
+        await this.loadCurrentData();
+        this.value = 0;
+        this.timeCheck = setInterval(async () => {
+          this.value += 1;
+          if (this.value > 100) {
+            this.value = 1;
+            let url = this.serverPath + "loadolddata.php";
+            let res = await axios.get(url);
+            await this.loadCurrentData();
+            let dateM = new Date();
 
-              if (dateM.getHours() >= 1) {
-                await this.loadDayTimeData();
-                await this.loadNightTimeData();
-                await this.load24hourData();
-              }
-
-              // let today = new Date();
-              // let h = today.getHours;
-              // let m = today.getMinutes;
-              // console.log(h, m);
-              // if (h == 0 && m <= 5) {
-              //   await this.load24hourData();
-              // }
+            if (dateM.getHours() >= 1) {
+              await this.loadDayTimeData();
+              await this.loadNightTimeData();
+              await this.load24hourData();
             }
-          }, 300000 / this.speed); // เวลาในการโหลด 1% จะทำการโหลดทุกครั้งที่ ครบ 100
-        } else {
-          clearInterval(this.timeCheck);
-        }
+
+            // let today = new Date();
+            // let h = today.getHours;
+            // let m = today.getMinutes;
+            // console.log(h, m);
+            // if (h == 0 && m <= 5) {
+            //   await this.load24hourData();
+            // }
+          }
+        }, 300000 / this.speed); // เวลาในการโหลด 1% จะทำการโหลดทุกครั้งที่ ครบ 100
       } else {
-        this.$q.notify({
-          message: "Password incorrect",
-          color: "negative",
-        });
-        this.password = "";
+        clearInterval(this.timeCheck);
       }
+      // } else {
+      //   this.$q.notify({
+      //     message: "Password incorrect",
+      //     color: "negative",
+      //   });
+      //   this.password = "";
+      // }
     },
     async loadPassword() {
       let url = this.serverPath + "loadpassword.php";
